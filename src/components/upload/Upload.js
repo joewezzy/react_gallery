@@ -3,7 +3,9 @@ import Form from './Form'
 
 const Upload = () => {
   return (
-    <div><Form /></div>
+    <div>
+    <Form />
+    </div>
   )
 }
 

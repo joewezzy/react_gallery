@@ -1,36 +1,32 @@
 import * as React from "react";
-import {
-  Button,
-  Box,
-  Avatar,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  Divider,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
-import { Settings, Lock, Logout } from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
+import { Button } from "@mui/material";
+import { Lock } from "@mui/icons-material";
 
-export default function AccountMenu() {
+export default function Nav() {
+  const [currentUser, setCurrentUser] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const [currentUser, setCurrentUser] = React.useState(null);
-
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         {!currentUser ? (
-          <Button startIcon={<Lock />}> Login</Button>
+          <Button startIcon={<Lock />}>Login</Button>
         ) : (
           <Tooltip title="Account settings">
             <IconButton
@@ -41,12 +37,9 @@ export default function AccountMenu() {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar
-                sx={{ width: 32, height: 32 }}
-                src={currentUser?.photoUrl}
-              >
-                {currentUser?.displayName?.charAt(0)?.toUpperCase() ||
-                  currentUser?.email?.charAt(0)?.toUpperCase()}
+              <Avatar sx={{ width: 32, height: 32 }} src={currentUser?.profileUrl}>
+              {currentUser?.name?.charAt(0)?.toUpperCase() || 
+                currentUser?.email?.charAt(0)?.toUpperCase()}
               </Avatar>
             </IconButton>
           </Tooltip>
@@ -88,7 +81,7 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
+          <Avatar /> My account
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
