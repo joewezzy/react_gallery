@@ -1,6 +1,7 @@
 import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -13,23 +14,42 @@ function srcset(image, size, rows = 1, cols = 1) {
 
 export default function ImagesList() {
   return (
-    <ImageList variant="quilted" cols={4} rowHeight={200}>
-      {itemData.map((item, index) => (
-        <ImageListItem
-          key={item.img}
-          cols={pattern[index - Math.floor(index/pattern.length) * pattern.length].cols}
-          rows={pattern[index - Math.floor(index/pattern.length) * pattern.length].rows}
-        >
-          <img
-            {...srcset(item.img, 200, 
-              pattern[index - Math.floor(index/pattern.length) * pattern.length].rows,
-              pattern[index - Math.floor(index/pattern.length) * pattern.length].cols)}
-            alt={item.title}
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
+    <SimpleReactLightbox>
+      <SRLWrapper>
+        <ImageList variant="quilted" cols={4} rowHeight={200}>
+          {itemData.map((item, index) => (
+            <ImageListItem
+              key={item.img}
+              cols={
+                pattern[
+                  index - Math.floor(index / pattern.length) * pattern.length
+                ].cols
+              }
+              rows={
+                pattern[
+                  index - Math.floor(index / pattern.length) * pattern.length
+                ].rows
+              }
+            >
+              <img
+                {...srcset(
+                  item.img,
+                  200,
+                  pattern[
+                    index - Math.floor(index / pattern.length) * pattern.length
+                  ].rows,
+                  pattern[
+                    index - Math.floor(index / pattern.length) * pattern.length
+                  ].cols
+                )}
+                alt={item.title}
+                loading="lazy"
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </SRLWrapper>
+    </SimpleReactLightbox>
   );
 }
 
@@ -88,34 +108,34 @@ const itemData = [
 const pattern = [
   {
     rows: 2,
-    cols: 2
+    cols: 2,
   },
   {
     rows: 1,
-    cols: 1
+    cols: 1,
   },
   {
     rows: 1,
-    cols: 1
+    cols: 1,
   },
   {
     rows: 1,
-    cols: 2
+    cols: 2,
   },
   {
     rows: 1,
-    cols: 2
+    cols: 2,
   },
   {
     rows: 2,
-    cols: 2
+    cols: 2,
   },
   {
     rows: 1,
-    cols: 1
+    cols: 1,
   },
   {
     rows: 1,
-    cols: 1
-  }
-]
+    cols: 1,
+  },
+];
