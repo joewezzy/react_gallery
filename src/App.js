@@ -1,6 +1,6 @@
 import { Container } from '@mui/material'
 import React from 'react'
-import ImageList from './components/imageList/ImageList'
+import ImageList from './components/imageList/ImagesList'
 import Nav from './components/Nav'
 import Upload from './components/upload/Upload'
 
