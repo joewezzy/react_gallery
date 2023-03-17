@@ -2,6 +2,9 @@ import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
+import Options from "./Options";
+import { Avatar, Tooltip, Typography } from "@mui/material";
+import moment from "moment/moment";
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -30,7 +33,14 @@ export default function ImagesList() {
                   index - Math.floor(index / pattern.length) * pattern.length
                 ].rows
               }
+              sx={{
+                opacity: '.7',
+                transition: 'opacity',
+                curser: 'pointer',
+                '&:hover': {opacity:1}
+              }}
             >
+            <Options />
               <img
                 {...srcset(
                   item.img,
@@ -45,6 +55,12 @@ export default function ImagesList() {
                 alt={item.title}
                 loading="lazy"
               />
+              <Typography variaint='body2' component='span' sx={{ position: 'absolute', bottom: 0, left:0, color: 'white', background: 'rbga(0,0,0,.3)', p: '5px', borderTopRightRadius: 8 }}>
+              {moment(new Date() - 500 * 60 * 60).fromNow()}
+              </Typography>
+              <Tooltip title='User Name' sx={{ position: 'absolute', top: 0, left: 0, color: 'white', background: 'rgba(0,0,0,.3)', cursor: 'pointer' }}>
+              <Avatar src="" imgProps={'aria-hidden'}/>
+              </Tooltip>
             </ImageListItem>
           ))}
         </ImageList>
