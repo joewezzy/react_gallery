@@ -59,7 +59,7 @@ export default function ImagesList() {
               {moment(new Date() - 500 * 60 * 60).fromNow()}
               </Typography>
               <Tooltip title='User Name' sx={{ position: 'absolute', top: 0, left: 0, color: 'white', background: 'rgba(0,0,0,.3)', cursor: 'pointer' }}>
-              <Avatar src="" imgProps={'aria-hidden'}/>
+              <Avatar src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e" imgProps={'aria-hidden'} alt='Breakfast' />
               </Tooltip>
             </ImageListItem>
           ))}
