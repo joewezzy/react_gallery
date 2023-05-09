@@ -9,6 +9,7 @@ import { Delete, MoreVert } from "@mui/icons-material";
 
 export default function Options() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,6 +17,7 @@ export default function Options() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>

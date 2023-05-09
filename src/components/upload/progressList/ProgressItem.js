@@ -4,7 +4,7 @@ import React from "react";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
 
 const ProgressItem = ({file}) => {
-  const [progress, setProgress] = React.useState(100);
+  const [progress, setProgress] = React.useState(50);
   const [imageUrl, setImageUrl] = React.useState(null);
 
   React.useEffect(() => {
