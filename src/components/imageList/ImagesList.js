@@ -5,6 +5,7 @@ import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
 import Options from "./Options";
 import { Avatar, Tooltip, Typography } from "@mui/material";
 import moment from "moment/moment";
+import useFirestore from "../../firebase/useFirestore";
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -16,13 +17,15 @@ function srcset(image, size, rows = 1, cols = 1) {
 }
 
 export default function ImagesList() {
+  const docs = useFirestore();
+  
   return (
     <SimpleReactLightbox>
       <SRLWrapper>
         <ImageList variant="quilted" cols={4} rowHeight={200}>
-          {itemData.map((item, index) => (
+          {docs?.map((item, index) => (
             <ImageListItem
-              key={item.img}
+              key={item?.id}
               cols={
                 pattern[
                   index - Math.floor(index / pattern.length) * pattern.length
@@ -34,16 +37,16 @@ export default function ImagesList() {
                 ].rows
               }
               sx={{
-                opacity: '.7',
-                transition: 'opacity',
-                curser: 'pointer',
-                '&:hover': {opacity:1}
+                opacity: ".7",
+                transition: "opacity",
+                curser: "pointer",
+                "&:hover": { opacity: 1 },
               }}
             >
-            <Options />
+              <Options imageId={item?.id} />
               <img
                 {...srcset(
-                  item.img,
+                  item?.data?.imageURL,
                   200,
                   pattern[
                     index - Math.floor(index / pattern.length) * pattern.length
@@ -52,14 +55,39 @@ export default function ImagesList() {
                     index - Math.floor(index / pattern.length) * pattern.length
                   ].cols
                 )}
-                alt={item.title}
+                alt={item?.data?.uName || item?.data?.uEmail}
                 loading="lazy"
               />
-              <Typography variaint='body2' component='span' sx={{ position: 'absolute', bottom: 0, left:0, color: 'white', background: 'rbga(0,0,0,.3)', p: '5px', borderTopRightRadius: 8 }}>
-              {moment(new Date() - 500 * 60 * 60).fromNow()}
+              <Typography
+                variaint="body2"
+                component="span"
+                sx={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  color: "white",
+                  background: "rbga(0,0,0,.3)",
+                  p: "5px",
+                  borderTopRightRadius: 8,
+                }}
+              >
+                {moment(item?.data?.timestamp?.toDate()).fromNow()}
               </Typography>
-              <Tooltip title='User Name' sx={{ position: 'absolute', top: 0, left: 0, color: 'white', background: 'rgba(0,0,0,.3)', cursor: 'pointer' }}>
-              <Avatar src="https://images.unsplash.com/photo-1551963831-b3b1ca40c98e" imgProps={'aria-hidden'} alt='Breakfast' />
+              <Tooltip
+                title={item?.data?.uName || item?.data?.uEmail}
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  color: "white",
+                  background: "rgba(0,0,0,.3)",
+                  cursor: "pointer",
+                }}
+              >
+                <Avatar
+                  src={item?.data?.uPhoto}
+                  alt="Breakfast"
+                />
               </Tooltip>
             </ImageListItem>
           ))}
@@ -69,57 +97,6 @@ export default function ImagesList() {
   );
 }
 
-const itemData = [
-  {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
-    author: "@arwinneil",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    title: "Sea star",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    title: "Bike",
-  },
-];
 
 const pattern = [
   {

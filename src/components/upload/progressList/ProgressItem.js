@@ -4,6 +4,7 @@ import React from "react";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import { v4 as uuidv4 } from 'uuid';
 import uploadFileProgress from "../../../firebase/uploadFileProgress";
+import addDocument from "../../../firebase/addDocument";
 
 const ProgressItem = ({file}) => {
   const [progress, setProgress] = React.useState(50);
@@ -16,7 +17,14 @@ const ProgressItem = ({file}) => {
       const imageName = uuidv4() + '.' + file.name.split('.').pop();
       try {
         const url = await uploadFileProgress(file, `gallery/${currentUser.uid}`, imageName, setProgress);
-        console.log(url);
+        const  galleryDoc = {
+          imageURL: url,
+          uid: currentUser.uid,
+          uEmail: 'test@test.com',
+          uName: 'Doe', 
+          uPhoto: '',
+        }
+        await addDocument('gallery', galleryDoc, imageName);
         setImageUrl(null);
       } catch (error) {
         alert(error.message);
