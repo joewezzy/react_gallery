@@ -11,22 +11,50 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Button } from "@mui/material";
 import { Lock } from "@mui/icons-material";
+import { useAuth } from "../context/AuthContext";
+import Login from "./user/Login";
 
 export default function Nav() {
-  const [currentUser, setCurrentUser] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const { currentUser, setModel, logout, setAlert } = useAuth();
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const openLogin = () => {
+    setModel({ isOpen: true, title: "Login", content: <Login /> });
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      setAlert({
+        isAlert: true,
+        severity: "error",
+        message: error.message,
+        timeout: 8000,
+        location: "main",
+      });
+      console.log(error);
+    }
+  };
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         {!currentUser ? (
-          <Button startIcon={<Lock />}>Login</Button>
+          <Button startIcon={<Lock />} onClick={openLogin}>
+            Login
+          </Button>
         ) : (
           <Tooltip title="Account settings">
             <IconButton
@@ -37,9 +65,12 @@ export default function Nav() {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar sx={{ width: 32, height: 32 }} src={currentUser?.profileUrl}>
-              {currentUser?.name?.charAt(0)?.toUpperCase() || 
-                currentUser?.email?.charAt(0)?.toUpperCase()}
+              <Avatar
+                sx={{ width: 32, height: 32 }}
+                src={currentUser?.photoUrl}
+              >
+                {currentUser?.name?.charAt(0)?.toUpperCase() ||
+                  currentUser?.email?.charAt(0)?.toUpperCase()}
               </Avatar>
             </IconButton>
           </Tooltip>
@@ -81,7 +112,8 @@ export default function Nav() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+          <Avatar sx={{ width: 32, height: 32 }} src={currentUser?.photoUrl} />{" "}
+          Profile
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
@@ -90,7 +122,7 @@ export default function Nav() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

@@ -8,10 +8,11 @@ import Tooltip from "@mui/material/Tooltip";
 import { Delete, MoreVert } from "@mui/icons-material";
 import deleteDocument from "../../firebase/deleteDocument";
 import deleteFile from "../../firebase/deleteFile";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Options({imageId}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const currentUser = {uid: 'userId'};
+  const { currentUser, setAlert } = useAuth();
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -26,6 +27,13 @@ export default function Options({imageId}) {
       await deleteDocument('gallery', imageId);
       await deleteFile(`gallery/${currentUser.uid}/${imageId}`);
     } catch (error) {
+      setAlert({
+        isAlert: true,
+        severity: 'error',
+        message: error.message,
+        timeout: 8000,
+        location: 'main',
+      });
       alert(error.message);
       console.log(error);
     }

@@ -5,12 +5,13 @@ import CircularProgressWithLabel from "./CircularProgressWithLabel";
 import { v4 as uuidv4 } from 'uuid';
 import uploadFileProgress from "../../../firebase/uploadFileProgress";
 import addDocument from "../../../firebase/addDocument";
+import { useAuth } from "../../../context/AuthContext";
 
 const ProgressItem = ({file}) => {
   const [progress, setProgress] = React.useState(50);
   const [imageUrl, setImageUrl] = React.useState(null);
 
-  const currentUser = {uid:'userId'};
+  const {currentUser, setAlert } = useAuth();
 
   React.useEffect(() => {
     const uploadImage = async () => {
@@ -19,15 +20,21 @@ const ProgressItem = ({file}) => {
         const url = await uploadFileProgress(file, `gallery/${currentUser.uid}`, imageName, setProgress);
         const  galleryDoc = {
           imageURL: url,
-          uid: currentUser.uid,
-          uEmail: 'test@test.com',
-          uName: 'Doe', 
-          uPhoto: '',
+          uid: currentUser?.uid || '',
+          uEmail: currentUser?.email || '',
+          uName: currentUser?.displayName || '',
+          uPhoto: currentUser?.photoURL || '',
         }
         await addDocument('gallery', galleryDoc, imageName);
         setImageUrl(null);
       } catch (error) {
-        alert(error.message);
+        setAlert({
+          isAlert: true,
+          severity: 'error',
+          message: error.message,
+          timeout: 8000,
+          location: 'main',
+        });
         console.log(error);
       } 
     }
