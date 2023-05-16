@@ -55,7 +55,7 @@ export default function ImagesList() {
                     index - Math.floor(index / pattern.length) * pattern.length
                   ].cols
                 )}
-                alt={item?.data?.uName || item?.data?.uEmail}
+                alt={item?.data?.uName || item?.data?.uEmail?.split('@')[0]}
                 loading="lazy"
               />
               <Typography
@@ -74,13 +74,11 @@ export default function ImagesList() {
                 {moment(item?.data?.timestamp?.toDate()).fromNow()}
               </Typography>
               <Tooltip
-                title={item?.data?.uName || item?.data?.uEmail}
+                title={item?.data?.uName || item?.data?.uEmail?.split('@')[0]}
                 sx={{
                   position: "absolute",
-                  top: 0,
-                  left: 0,
-                  color: "white",
-                  background: "rgba(0,0,0,.3)",
+                  bottom: '3px',
+                  right: '3px',
                   cursor: "pointer",
                 }}
               >
