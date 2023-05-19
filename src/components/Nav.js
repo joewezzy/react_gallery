@@ -13,6 +13,7 @@ import { Button } from "@mui/material";
 import { Lock } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
 import Login from "./user/Login";
+import Profile from "./user/Profile";
 
 export default function Nav() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -27,10 +28,6 @@ export default function Nav() {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const openLogin = () => {
-    setModel({ isOpen: true, title: "Login", content: <Login /> });
   };
 
   const handleLogout = async () => {
@@ -52,7 +49,7 @@ export default function Nav() {
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         {!currentUser ? (
-          <Button startIcon={<Lock />} onClick={openLogin}>
+          <Button startIcon={<Lock />} onClick={() => setModel({ isOpen: true, title: "Login", content: <Login /> })}>
             Login
           </Button>
         ) : (
@@ -67,7 +64,7 @@ export default function Nav() {
             >
               <Avatar
                 sx={{ width: 32, height: 32 }}
-                src={currentUser?.photoUrl}
+                src={currentUser?.photoURL}
               >
                 {currentUser?.name?.charAt(0)?.toUpperCase() ||
                   currentUser?.email?.charAt(0)?.toUpperCase()}
@@ -111,8 +108,8 @@ export default function Nav() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar sx={{ width: 32, height: 32 }} src={currentUser?.photoUrl} />{" "}
+        <MenuItem onClick={() => setModel({isOpen: true, title: 'Update Profile', content: <Profile />})}>
+          <Avatar sx={{ width: 32, height: 32 }} src={currentUser?.photoURL} />{" "}
           Profile
         </MenuItem>
         <Divider />
