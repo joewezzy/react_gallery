@@ -4,33 +4,57 @@ import {
   DialogContent,
   DialogContentText,
 } from "@mui/material";
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, reauthenticateWithPopup } from "firebase/auth";
 import React from "react";
 import { useAuth } from "../../../context/AuthContext";
 import ReAuth from "./ReAuth";
-import ChangeEmail from './ChangeEmail';
+import ChangeEmail from "./ChangeEmail";
+import DeleteAccount from "./DeleteAccount";
 
 const AccountSettings = () => {
   const { currentUser, setModel, model, setAlert } = useAuth();
   const isPasswordProvider =
-    currentUser?.providerData[0].providerId === 'password';
+    currentUser?.providerData[0].providerId === "password";
 
-  const handleAction = (action) => {
-    if(isPasswordProvider) {
-      setModel({isOpen: true, title: 'Re-Login', content: <ReAuth {...{action}} />});
+  const handleAction = async (action) => {
+    if (isPasswordProvider) {
+      setModel({
+        ...model,
+        title: "Re-Login",
+        content: <ReAuth {...{ action }} />,
+      });
     } else {
       try {
         await reauthenticateWithPopup(currentUser, new GoogleAuthProvider());
         switch (action) {
-          case 'changeEmail':
-            setModel({isOpen: true, title: 'Update Email', content: <ChangeEmail />})
+          case "changeEmail":
+            setModel({
+              ...model,
+              title: "Update Email",
+              content: <ChangeEmail />,
+            });
             break;
-        
+
+          case "deleteAccount":
+            setModel({
+              ...model,
+              title: "Delete Account",
+              content: <DeleteAccount />,
+            });
+            break;
+
           default:
-            break;
+            throw new Error('No matching action!');
         }
       } catch (error) {
-        
+        setAlert({
+          isAlert: true,
+          severity: "error",
+          message: error.message,
+          timeout: 5000,
+          location: "model",
+        });
+        console.log(error);
       }
     }
   };
