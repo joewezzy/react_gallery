@@ -6,6 +6,7 @@ const PasswordField = ({
   passwordRef,
   id = "password",
   label = "password",
+  autoFocus = true,
 }) => {
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -19,7 +20,7 @@ const PasswordField = ({
 
   return (
     <TextField
-      autoFocus
+      autoFocus={autoFocus}
       margin="normal"
       variant="standard"
       id={id}
