@@ -1,5 +1,4 @@
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
-import React from 'react'
 import { db } from './config';
 
 const updateUserRecords = (collectionName, uid, updatedObj) => {

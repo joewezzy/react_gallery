@@ -6,6 +6,7 @@ import MainNotification from "./components/MainNotification";
 import Model from "./components/Model";
 import Nav from "./components/Nav";
 import Upload from "./components/upload/Upload";
+import Verification from "./components/user/Verification";
 import AuthContext from "./context/AuthContext";
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
       <AuthContext>
       <Loading />
         <Model />
+        <Verification />
         <MainNotification />
         <Nav />
         <Upload />

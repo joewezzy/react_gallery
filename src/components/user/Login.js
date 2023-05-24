@@ -108,13 +108,14 @@ const Login = () => {
             Please enter your email and password here:
           </DialogContentText>
           <EmailField {...{ emailRef }} />
-          <PasswordField {...{ passwordRef }} />
+          <PasswordField {...{ passwordRef, autoFocus: false }} />
           {isRegister && (
             <PasswordField
               {...{
                 passwordRef: confirmPasswordRef,
                 id: "confirmPassword",
                 label: "Confirm Password",
+                autoFocus: false,
               }}
             />
           )}
