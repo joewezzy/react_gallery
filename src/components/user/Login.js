@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 import EmailField from "./inputs/EmailField";
 import PasswordField from "./inputs/PasswordField";
 import SubmitButton from "./inputs/SubmitButton";
+import ResetPassword from "./ResetPassword";
 
 const Login = () => {
   const emailRef = useRef();
@@ -122,7 +123,7 @@ const Login = () => {
           {isRegister ? (
             <Button hidden></Button>
           ) : (
-            <Button size="smail">Forget Password? </Button>
+            <Button size="smail" onClick={() => setModel({...model, title: 'Reset Password', content: <ResetPassword />})}>Forget Password? </Button>
           )}
           <SubmitButton />
         </DialogActions>
