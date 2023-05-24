@@ -1,7 +1,7 @@
 import { AddAPhoto } from "@mui/icons-material";
 import { Fab, Input } from "@mui/material";
 import React from "react";
-import useAuth from '../../context/AuthContext';
+import {useAuth} from '../../context/AuthContext';
 import Login from '../../components/user/Login';
 
 const Form = ({ setFiles }) => {

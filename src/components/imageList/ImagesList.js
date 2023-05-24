@@ -6,7 +6,7 @@ import Options from "./Options";
 import { Avatar, Tooltip, Typography } from "@mui/material";
 import moment from "moment/moment";
 import useFirestore from "../../firebase/useFirestore";
-import useAuth from "../../context/AuthContext";
+import {useAuth} from "../../context/AuthContext";
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
