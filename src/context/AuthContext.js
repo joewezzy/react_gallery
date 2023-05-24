@@ -43,7 +43,7 @@ const AuthContext = ({ children }) => {
 
   const logout = () => {
     return signOut(auth);
-  };
+  }
 
   const resetPassword = (email) => {
     return sendPasswordResetEmail(auth, email);
