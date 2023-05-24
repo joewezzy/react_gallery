@@ -2,17 +2,48 @@ import { CheckCircleOutlined } from "@mui/icons-material";
 import { Box, ImageListItem } from "@mui/material";
 import React from "react";
 import CircularProgressWithLabel from "./CircularProgressWithLabel";
+import { v4 as uuidv4 } from 'uuid';
+import uploadFileProgress from "../../../firebase/uploadFileProgress";
+import addDocument from "../../../firebase/addDocument";
+import { useAuth } from "../../../context/AuthContext";
 
 const ProgressItem = ({file}) => {
   const [progress, setProgress] = React.useState(50);
   const [imageUrl, setImageUrl] = React.useState(null);
 
+  const {currentUser, setAlert } = useAuth();
+
   React.useEffect(() => {
+    const uploadImage = async () => {
+      const imageName = uuidv4() + '.' + file.name.split('.').pop();
+      try {
+        const url = await uploadFileProgress(file, `gallery/${currentUser.uid}`, imageName, setProgress);
+        const  galleryDoc = {
+          imageURL: url,
+          uid: currentUser?.uid || '',
+          uEmail: currentUser?.email || '',
+          uName: currentUser?.displayName || '',
+          uPhoto: currentUser?.photoURL || '',
+        }
+        await addDocument('gallery', galleryDoc, imageName);
+        setImageUrl(null);
+      } catch (error) {
+        setAlert({
+          isAlert: true,
+          severity: 'error',
+          message: error.message,
+          timeout: 8000,
+          location: 'main',
+        });
+        console.log(error);
+      } 
+    }
     setImageUrl(URL.createObjectURL(file));
+    uploadImage();
   }, [file]);
   
   return (
-    <ImageListItem cols={1} rows={1}>
+    imageUrl && <ImageListItem cols={1} rows={1}>
       <img
         src={imageUrl}
         alt="gallery"
