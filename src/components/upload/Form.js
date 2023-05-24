@@ -9,7 +9,7 @@ const {currentUser, setModel} = useAuth();
   const fileRef = React.useRef();
 
   const handleClick = () => {
-    if (currentUser) return setModel({isOpen: true, title: 'Login', content: <Login />});
+    if (!currentUser) return setModel({isOpen: true, title: 'Login', content: <Login />});
     fileRef.current.click();
   };
 
