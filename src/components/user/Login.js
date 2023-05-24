@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 import EmailField from "./inputs/EmailField";
 import PasswordField from "./inputs/PasswordField";
 import SubmitButton from "./inputs/SubmitButton";
+import ResetPassword from "./ResetPassword";
 
 const Login = () => {
   const emailRef = useRef();
@@ -107,13 +108,14 @@ const Login = () => {
             Please enter your email and password here:
           </DialogContentText>
           <EmailField {...{ emailRef }} />
-          <PasswordField {...{ passwordRef }} />
+          <PasswordField {...{ passwordRef, autoFocus: false }} />
           {isRegister && (
             <PasswordField
               {...{
                 passwordRef: confirmPasswordRef,
                 id: "confirmPassword",
                 label: "Confirm Password",
+                autoFocus: false,
               }}
             />
           )}
@@ -122,7 +124,7 @@ const Login = () => {
           {isRegister ? (
             <Button hidden></Button>
           ) : (
-            <Button size="smail">Forget Password? </Button>
+            <Button size="smail" onClick={() => setModel({...model, title: 'Reset Password', content: <ResetPassword />})}>Forget Password? </Button>
           )}
           <SubmitButton />
         </DialogActions>

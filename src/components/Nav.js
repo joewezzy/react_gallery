@@ -14,6 +14,7 @@ import { Lock } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
 import Login from "./user/Login";
 import Profile from "./user/Profile";
+import AccountSettings from "./user/settings/AccountSettings";
 
 export default function Nav() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -113,7 +114,15 @@ export default function Nav() {
           Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() =>
+            setModel({
+              isOpen: true,
+              title: "Account Setting",
+              content: <AccountSettings />,
+            })
+          }
+        >
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
