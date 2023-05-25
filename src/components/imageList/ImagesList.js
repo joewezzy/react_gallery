@@ -6,7 +6,6 @@ import Options from "./Options";
 import { Avatar, Tooltip, Typography } from "@mui/material";
 import moment from "moment/moment";
 import useFirestore from "../../firebase/useFirestore";
-import {useAuth} from "../../context/AuthContext";
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -18,7 +17,6 @@ function srcset(image, size, rows = 1, cols = 1) {
 }
 
 export default function ImagesList() {
-  const { currentUser } = useAuth();
   const docs = useFirestore();
 
   return (
@@ -45,9 +43,11 @@ export default function ImagesList() {
                 "&:hover": { opacity: 1 },
               }}
             >
-              {currentUser?.uid === item?.data?.uid && (
-                <Options imageId={item?.id} />
-              )}
+              <Options
+                imageId={item?.id}
+                uid={item?.data?.uid}
+                imageURL={item?.data?.imageURL}
+              />
               <img
                 {...srcset(
                   item?.data?.imageURL,
