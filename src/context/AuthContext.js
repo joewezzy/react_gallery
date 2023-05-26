@@ -30,6 +30,7 @@ const AuthContext = ({ children }) => {
 
   const signUp = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
+  };
 
   const loginWithGoogle = () => {
     const provider = new GoogleAuthProvider();
@@ -51,7 +52,6 @@ const AuthContext = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      console.log("User status changed: ", user);
     });
     return unsubscribe;
   }, []);

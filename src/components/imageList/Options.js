@@ -5,12 +5,12 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { Delete, MoreVert } from "@mui/icons-material";
+import { Delete, Download, MoreVert } from "@mui/icons-material";
 import deleteDocument from "../../firebase/deleteDocument";
 import deleteFile from "../../firebase/deleteFile";
 import { useAuth } from "../../context/AuthContext";
 
-export default function Options({imageId}) {
+export default function Options({ imageId, uid, imageURL }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser, setAlert } = useAuth();
 
@@ -22,22 +22,46 @@ export default function Options({imageId}) {
     setAnchorEl(null);
   };
 
-  const handleDelete = async () => {
+  const handleDownload = async () => {
     try {
-      await deleteDocument('gallery', imageId);
-      await deleteFile(`gallery/${currentUser.uid}/${imageId}`);
+      const response = await fetch(imageURL);
+      const data = await response.blob();
+      const blob = URL.createObjectURL(data);
+      const link = document.createElement('a');
+      link.href = blob;
+      link.download = imageId;
+      link.click();
+      URL.revokeObjectURL(blob);
+      link.remove();
     } catch (error) {
       setAlert({
         isAlert: true,
-        severity: 'error',
+        severity: "error",
         message: error.message,
-        timeout: 8000,
-        location: 'main',
+        timeout: 5000,
+        location: "main",
       });
       alert(error.message);
       console.log(error);
     }
   }
+
+  const handleDelete = async () => {
+    try {
+      await deleteDocument("gallery", imageId);
+      await deleteFile(`gallery/${currentUser.uid}/${imageId}`);
+    } catch (error) {
+      setAlert({
+        isAlert: true,
+        severity: "error",
+        message: error.message,
+        timeout: 5000,
+        location: "main",
+      });
+      alert(error.message);
+      console.log(error);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -92,11 +116,20 @@ export default function Options({imageId}) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleDelete}>
+        <MenuItem onClick={handleDownload}>
           <ListItemIcon>
-            <Delete /> Delete
+            <Download /> 
           </ListItemIcon>
+          Download
         </MenuItem>
+        {currentUser?.uid === uid?.data?.uid && (
+          <MenuItem onClick={handleDelete}>
+          <ListItemIcon>
+            <Delete /> 
+          </ListItemIcon>
+          Delete
+        </MenuItem>
+          )}
       </Menu>
     </React.Fragment>
   );

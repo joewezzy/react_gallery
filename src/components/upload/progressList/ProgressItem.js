@@ -25,7 +25,7 @@ const ProgressItem = ({file}) => {
           uName: currentUser?.displayName || '',
           uPhoto: currentUser?.photoURL || '',
         }
-        await addDocument('gallery', galleryDoc, imageName);
+        await addDocument('user', galleryDoc, imageName);
         setImageUrl(null);
       } catch (error) {
         setAlert({
