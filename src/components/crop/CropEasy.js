@@ -108,7 +108,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
             startIcon={<CropIcon />}
             onClick={cropImage}
           >
-            Cancel
+            Crop
           </Button>
         </Box>
       </DialogActions>

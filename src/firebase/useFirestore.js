@@ -3,7 +3,7 @@ import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { db } from "./config";
 
-const useFirestore = (collectionName = "gallery") => {
+const useFirestore = (collectionName = "user") => {
   const [doc, setDoc] = React.useState([]);
   const { setAlert } = useAuth();
 
@@ -20,7 +20,6 @@ const useFirestore = (collectionName = "gallery") => {
         snapshot.forEach((doc) => {
           docs.push({ id: doc.id, data: doc.data() });
         });
-        console.log(docs);
         setDoc(docs);
       },
       (error) => {
