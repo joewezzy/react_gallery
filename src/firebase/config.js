@@ -9,12 +9,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDFdnVnibz9s5EE--YMxh-LIzjJTFLZLFg",
-  authDomain: "react-firebase-gallery-d-7e3e7.firebaseapp.com",
-  projectId: "react-firebase-gallery-d-7e3e7",
-  storageBucket: "react-firebase-gallery-d-7e3e7.appspot.com",
-  messagingSenderId: "558810932386",
-  appId: "1:558810932386:web:ea5c563c9210e3fbe2e3fb",
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
 };
 
 // Initialize Firebase
@@ -23,4 +23,4 @@ export const storage = getStorage();
 export const db = getFirestore();
 
 // Firebase Authentication setup.
-export const auth = getAuth();
+export const auth = getAuth()

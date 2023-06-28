@@ -1,12 +1,12 @@
-import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import SimpleReactLightbox, { SRLWrapper } from "simple-react-lightbox";
 import Options from "./Options";
 import { Avatar, Tooltip, Typography } from "@mui/material";
 import moment from "moment/moment";
 import useFirestore from "../../firebase/useFirestore";
-import {useAuth} from "../../context/AuthContext";
+import { useState } from "react";
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -18,12 +18,12 @@ function srcset(image, size, rows = 1, cols = 1) {
 }
 
 export default function ImagesList() {
-  const { currentUser } = useAuth();
   const docs = useFirestore();
+  const [isOpen, setIsOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
 
   return (
-    <SimpleReactLightbox>
-      <SRLWrapper>
+    <>
         <ImageList variant="quilted" cols={4} rowHeight={200}>
           {docs?.map((item, index) => (
             <ImageListItem
@@ -45,9 +45,11 @@ export default function ImagesList() {
                 "&:hover": { opacity: 1 },
               }}
             >
-              {currentUser?.uid === item?.data?.uid && (
-                <Options imageId={item?.id} />
-              )}
+              <Options
+                imageId={item?.id}
+                uid={item?.data?.uid}
+                imageURL={item?.data?.imageURL}
+              />
               <img
                 {...srcset(
                   item?.data?.imageURL,
@@ -61,6 +63,10 @@ export default function ImagesList() {
                 )}
                 alt={item?.data?.uName || item?.data?.uEmail?.split("@")[0]}
                 loading="lazy"
+                onClick={() => {
+                  setPhotoIndex(index);
+                  setIsOpen(true);
+                }}
               />
               <Typography
                 variaint="body2"
@@ -91,8 +97,19 @@ export default function ImagesList() {
             </ImageListItem>
           ))}
         </ImageList>
-      </SRLWrapper>
-    </SimpleReactLightbox>
+        {isOpen && (
+          <Lightbox 
+          mainSrc={docs[photoIndex]?.data?.imageURL}
+          nextSrc={docs[(photoIndex + 1) % docs.length]?.data?.imageURL}
+          prevSrc={docs[(photoIndex + docs.length -1) % docs.length]?.data?.imageURL}
+          onCloseRequest={() => setIsOpen(false)}
+          onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % docs.length)}
+          onMovePrevRequest={() => setPhotoIndex((photoIndex + docs.length - 1) % docs.length)}
+          imageTitle={docs[photoIndex]?.data?.uName}
+          imageCaption={docs[photoIndex]?.data?.uName}
+          />
+        )}
+      </>
   );
 }
 
