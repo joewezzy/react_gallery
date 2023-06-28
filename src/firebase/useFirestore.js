@@ -21,7 +21,6 @@ const useFirestore = (collectionName = "gallery") => {
           docs.push({ id: doc.id, data: doc.data() });
         });
         setDoc(docs);
-        console.log(docs);
       },
       (error) => {
         setAlert({
