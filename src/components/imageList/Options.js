@@ -42,7 +42,6 @@ export default function Options({ imageId, uid, imageURL }) {
         location: "main",
       });
       alert(error.message);
-      console.log(error);
     }
   }
 
@@ -59,7 +58,6 @@ export default function Options({ imageId, uid, imageURL }) {
         location: "main",
       });
       alert(error.message);
-      console.log(error);
     }
   };
 
@@ -122,7 +120,7 @@ export default function Options({ imageId, uid, imageURL }) {
           </ListItemIcon>
           Download
         </MenuItem>
-        {currentUser?.uid === uid?.data?.uid && (
+        {currentUser?.uid === uid && (
           <MenuItem onClick={handleDelete}>
           <ListItemIcon>
             <Delete /> 
