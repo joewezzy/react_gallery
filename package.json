@@ -26,7 +26,7 @@
     "build": "react-scripts build --configure=production",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build --configure=production && firebase deploy"
+    "deploy": "npm run build && firebase deploy"
   },
   "eslintConfig": {
     "extends": [
