@@ -9,7 +9,8 @@ const Form = ({ setFiles }) => {
   const fileRef = React.useRef();
 
   const handleClick = () => {
-    (!currentUser) && setModel({ isOpen: true, title: "Login", content: <Login /> });
+    if (!currentUser) 
+      return setModel({ isOpen: true, title: "Login", content: <Login /> });
     fileRef.current.click();
   };
 
